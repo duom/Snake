@@ -14,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+//
 public class Juego extends Application implements EventHandler<KeyEvent> {
     public static int ALTO_MENU = 30; // Margen vertical para el menú (se deja abajo)
     public static int ANCHO_PANTALLA = 800;
