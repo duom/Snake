@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -17,20 +21,20 @@ import javafx.stage.Stage;
 //
 public class Juego extends Application implements EventHandler<KeyEvent> {
     public static int ALTO_MENU = 30; // Margen vertical para el menú (se deja abajo)
-    public static int ANCHO_PANTALLA = 800;
-    public static int ALTO_PANTALLA = 600;
+    public static int ANCHO_PANTALLA = 500;
+    public static int ALTO_PANTALLA = 300;
     public static int ANCHO = 10; // Ancho de la serpiente
     public static int RETARDO_ANIMADOR = 100000000; // Controla la velocidad del juego
 
     public enum Direccion {
-        Arriba, Abajo, Izquierda, Derecha
+        Up, Down, Left, Right
     };
 
-    private Direccion dir = Direccion.Arriba; // Dirección de la serpiente
+    private Direccion dir = Direccion.Up; // Dirección de la serpiente
     private double cabezaX = ANCHO_PANTALLA / 2; // Posición inicial de la serpiente 400
     private double cabezaY = ALTO_PANTALLA * 4 / 5; // Poisición inicial de la serpiente 480
-    private int tamano = 1; // Tamaño inicial de la serpiente
-    private Group raiz; // Raíz de la escena JavaFX
+    private int tamano = 2; // Tamaño inicial de la serpiente
+    private Pane raiz; // Raíz de la escena JavaFX
     private ArrayList<Rectangle> trozos = new ArrayList<>();// Lista de trozos de la serpiente
     private Circle fruta; // Pues eso, la fruta.
     private Text puntos; // Texto con los puntos de la partida
@@ -42,12 +46,23 @@ public class Juego extends Application implements EventHandler<KeyEvent> {
 
     @Override
     public void start(Stage ventana) throws Exception {
+
+
+//        Parent root = FXMLLoader.load(getClass().getResource("estilo.fxml"));
+//        ventana.setTitle("Tres en Raya");
+//        Scene scene = new Scene(root, 600, 400);
+//        ventana.setScene(scene);
+//        ventana.show();
+
+
         ventana.setWidth(ANCHO_PANTALLA);
         ventana.setHeight(ALTO_PANTALLA);
         ventana.setTitle("SNAKE");
         ventana.setResizable(false);
-        raiz = new Group();
-        Scene escena = new Scene(raiz, Color.NAVY);
+        raiz = new Pane();
+        Scene escena = new Scene(raiz);
+
+        escena.getStylesheets().add(getClass().getResource("/sample/aplication.css").toExternalForm());
         ventana.setScene(escena);
         ponerFruta();
         puntos = new Text();
@@ -73,16 +88,16 @@ public class Juego extends Application implements EventHandler<KeyEvent> {
                     return;
 
                 switch (dir) {
-                    case Abajo:
+                    case Down:
                         cabezaY += ANCHO;
                         break;
-                    case Arriba:
+                    case Up:
                         cabezaY -= ANCHO;
                         break;
-                    case Derecha:
+                    case Right:
                         cabezaX += ANCHO;
                         break;
-                    case Izquierda:
+                    case Left:
                         cabezaX -= ANCHO;
                         break;
                 }
@@ -113,7 +128,7 @@ public class Juego extends Application implements EventHandler<KeyEvent> {
                     }
                 // Mover a la serpiente
                 Rectangle trozo = new Rectangle(ANCHO, ANCHO);
-                trozo.setFill(Color.RED);
+                trozo.setFill(Color.GREEN);
                 trozo.setStroke(Color.NAVY);
                 trozo.setX(cabezaX);
                 trozo.setY(cabezaY);
@@ -151,20 +166,20 @@ public class Juego extends Application implements EventHandler<KeyEvent> {
     public void handle(KeyEvent event) {
         switch (event.getCode()) {
             case UP:
-                if (!dir.equals(Direccion.Abajo))
-                    dir = Direccion.Arriba;
+                if (!dir.equals(Direccion.Down))
+                    dir = Direccion.Up;
                 break;
             case DOWN:
-                if (!dir.equals(Direccion.Arriba))
-                    dir = Direccion.Abajo;
+                if (!dir.equals(Direccion.Up))
+                    dir = Direccion.Down;
                 break;
             case RIGHT:
-                if (!dir.equals(Direccion.Izquierda))
-                    dir = Direccion.Derecha;
+                if (!dir.equals(Direccion.Left))
+                    dir = Direccion.Right;
                 break;
             case LEFT:
-                if (!dir.equals(Direccion.Derecha))
-                    dir = Direccion.Izquierda;
+                if (!dir.equals(Direccion.Right))
+                    dir = Direccion.Left;
                 break;
             default:
         }
